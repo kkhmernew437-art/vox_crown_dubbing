@@ -1,21 +1,41 @@
-name: vox_crown_dubbing
-description: "Vox Crown Dubbing App"
-publish_to: 'none'
-version: 1.0.0+1
+name: Build APK
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
+on:
+  push:
+    branches: [ main ]
 
-dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^1.0.2
-  video_player: ^2.8.2
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^3.0.0
+    steps:
+    - uses: actions/checkout@v4
 
-flutter:
-  uses-material-design: true
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'
+        channel: 'stable'
+
+    - name: Get Dependencies
+      run: flutter pub get
+
+    - name: Fix Android Project Structure
+      run: |
+        flutter create . --org com.voxcrown --project-name vox_crown_dubbing --platforms=android
+
+    - name: Build APK Release
+      run: flutter build apk --release
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release
+        path: build/app/outputs/flutter-apk/app-release.apk
+        
