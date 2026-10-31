@@ -12,7 +12,7 @@ class VoxCrownAIApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Vox Crown AI Dubbing',
+      title: 'វ៉ុកក្រោន ឌឹបប៊ីង',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
       home: const AIDubbingHome(),
     );
@@ -30,9 +30,9 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
   late VideoPlayerController _videoController;
   bool isVideoInitialized = false;
   
-  // ការកំណត់ការបកប្រែ AI
-  String sourceLanguage = 'ចិន (Chinese)';
-  String targetVoice = 'តួអង្គស្រី (Female AI Voice)';
+  // ការកំណត់ការបកប្រែ AI ជាភាសាខ្មែរសុទ្ធ
+  String sourceLanguage = 'ភាសាចិន';
+  String targetVoice = 'តួអង្គស្រី';
   bool isProcessingAI = false;
   bool isRecordingCustom = false;
   String videoStatusText = 'វីដេអូគំរូ AI (ត្រៀមរួចរាល់សម្រាប់ការបកប្រែ)';
@@ -40,7 +40,6 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
   @override
   void initState() {
     super.initState();
-    // ប្រើប្រាស់វីដេអូគំរូសម្រាប់តេស្តប្រព័ន្ធ
     _videoController = VideoPlayerController.networkUrl(
       Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
     )..initialize().then((_) {
@@ -56,7 +55,6 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
     super.dispose();
   }
 
-  // មុខងារจำลองការជ្រើសរើសវីដេអូពីទូរសព្ទ (Upload Video)
   void _pickVideoFromDevice() {
     setState(() {
       videoStatusText = 'បានជ្រើសរើសវីដេអូថ្មី (ត្រៀមបញ្ជូនទៅ AI)';
@@ -66,20 +64,18 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
     );
   }
 
-  // មុខងារបញ្ជូនទៅ AI បកប្រែភាសា (Chinese/English -> Khmer Dubbing)
   void _startAITranslation() {
     setState(() {
       isProcessingAI = true;
     });
 
-    // จำลองដំណើរការ AI កំពុងវិភាគសំឡេង និងបកប្រែវីដេអូยาวៗ
     Future.delayed(const Duration(seconds: 4), () {
       setState(() {
         isProcessingAI = false;
         videoStatusText = 'AI បានបកប្រែជាភាសាខ្មែរ ($targetVoice) រួចរាល់!';
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('AI Dubbing สำเร็จរួចរាល់! ចុច Play เพื่อស្តាប់')),
+        const SnackBar(content: Text('AI Dubbing สำเร็จរួចរាល់! ចុចចាក់ដើម្បីស្តាប់')),
       );
     });
   }
@@ -88,7 +84,7 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vox Crown AI Dubbing Studio'),
+        title: const Text('វ៉ុកក្រោន អាយអាយ ឌឹបប៊ីង'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -96,7 +92,6 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ផ្នែកបង្ហាញវីដេអូ
             Container(
               height: 220,
               decoration: BoxDecoration(
@@ -117,7 +112,6 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
             ),
             const SizedBox(height: 10),
             
-            // ប៊ូតុងបញ្ជាវីដេអូ
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -144,11 +138,10 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
             ),
             const Divider(height: 30),
 
-            // ទី១៖ ប៊ូតុងអាប់ឡូតវីដេអូ (Upload Video)
             ElevatedButton.icon(
               onPressed: _pickVideoFromDevice,
               icon: const Icon(Icons.upload_file),
-              label: const Text('អាប់ឡូតវីដេអូ (គាំទ្ររហូតដល់ ១ម៉ោង)', style: TextStyle(fontSize: 16)),
+              label: const Text('អាប់ឡូតវីដេអូ (គាំទ្ររហូតដល់ ១ម៉ោង)', style: TextStyle(fontSize: 15)),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 backgroundColor: Colors.indigo,
@@ -157,8 +150,7 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
             ),
             const SizedBox(height: 15),
 
-            // ទី២៖ ការជ្រើសរើសភាសា និងសំឡេង AI តួអង្គ
-            const Text('ជ្រើសរើសភាសាប្រភព និង AI Voice:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            const Text('ជ្រើសរើសភាសាប្រភព និងសំឡេង AI:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -166,7 +158,7 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
                   child: DropdownButtonFormField<String>(
                     value: sourceLanguage,
                     decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.symmetric(horizontal: 10)),
-                    items: ['ចិន (Chinese)', 'អង់គ្លេស (English)'].map((lang) {
+                    items: ['ភាសាចិន', 'ភាសាអង់គ្លេស'].map((lang) {
                       return DropdownMenuItem(value: lang, child: Text(lang));
                     }).toList(),
                     onChanged: (val) {
@@ -181,7 +173,7 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
                   child: DropdownButtonFormField<String>(
                     value: targetVoice,
                     decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.symmetric(horizontal: 10)),
-                    items: ['តួអង្គប្រុស (Male AI)', 'តួអង្គស្រី (Female AI)'].map((voice) {
+                    items: ['តួអង្គប្រុស', 'តួអង្គស្រី'].map((voice) {
                       return DropdownMenuItem(value: voice, child: Text(voice));
                     }).toList(),
                     onChanged: (val) {
@@ -195,19 +187,18 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
             ),
             const SizedBox(height: 20),
 
-            // ទី៣៖ ប៊ូតុងបញ្ជា AI ឱ្យបកប្រែស្វ័យប្រវត្តិ
             isProcessingAI
                 ? const Center(child: Column(
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(height: 10),
-                      Text('AI กำลังถอดเสียงและแปลเป็นภาษาខ្មែរ (រង់ចាំបន្តិច)...', style: TextStyle(color: Colors.deepPurple))
+                      Text('AI កំពុងបកប្រែជាភាសាខ្មែរ (សូមរង់ចាំបន្តិច)...', style: TextStyle(color: Colors.deepPurple))
                     ],
                   ))
                 : ElevatedButton.icon(
                     onPressed: _startAITranslation,
                     icon: const Icon(Icons.auto_awesome),
-                    label: const Text('เริ่มแปล AI ស្វ័យប្រវត្តិ (ចិន/អង់គ្លេស ➡️ ខ្មែរ)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    label: const Text('ចាប់ផ្តើមបកប្រែ AI ស្វ័យប្រវត្តិ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       backgroundColor: Colors.orange[800],
@@ -216,7 +207,6 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
                   ),
             const SizedBox(height: 20),
 
-            // ទី៤៖ មុខងារថតសំឡេងផ្ទាល់ខ្លួន (Custom Voice Recording)
             ElevatedButton.icon(
               onPressed: () {
                 setState(() {
@@ -224,7 +214,7 @@ class _AIDubbingHomeState extends State<AIDubbingHome> {
                 });
               },
               icon: Icon(isRecordingCustom ? Icons.stop : Icons.mic),
-              label: Text(isRecordingCustom ? 'កំពុងថតសំឡេងរបស់អ្នក... (ចុចเพื่อឈប់)' : 'បញ្ចូលសំឡេងនិយាយដោយខ្លួនឯງ (Custom Dubbing)'),
+              label: Text(isRecordingCustom ? 'កំពុងថតសំឡេង... (ចុចเพื่อឈប់)' : 'បញ្ចូលសំឡេងនិយាយដោយខ្លួនឯង'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: isRecordingCustom ? Colors.red : Colors.green,
                 foregroundColor: Colors.white,
