@@ -1,44 +1,22 @@
-name: Build APK
+name: vox_crown_dubbing
+description: "Vox Crown Dubbing App"
+publish_to: 'none'
+version: 1.0.0+1
 
-on:
-  push:
-    branches: [ main ]
+environment:
+  sdk: '>=3.0.0 <4.0.0'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  video_player: ^2.8.2
 
-    steps:
-    - uses: actions/checkout@v4
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
 
-    - name: Set up Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: '17'
-
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.19.0'
-        channel: 'stable'
-
-    - name: Install Dependencies
-      run: flutter pub get
-
-    - name: Update Min SDK
-      run: |
-        # កំណត់កម្រិត Min SDK ឱ្យលើកឡើងដល់ 21 ដើម្បីឱ្យស៊ីគ្នាជាមួយបណ្ណាល័យវីដេអូ
-        BUILD_GRADLE="android/app/build.gradle"
-        if [ -f "$BUILD_GRADLE" ]; then
-          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' "$BUILD_GRADLE"
-        fi
-
-    - name: Build APK
-      run: flutter build apk --release
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release
-        path: build/app/outputs/flutter-apk/app-release.apk
+flutter:
+  uses-material-design: true
+  
