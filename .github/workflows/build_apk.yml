@@ -26,6 +26,10 @@ jobs:
     - name: Get Dependencies
       run: flutter pub get
 
+    - name: Fix Android Project Structure
+      run: |
+        flutter create . --org com.voxcrown --project-name vox_crown_dubbing --platforms=android
+
     - name: Build APK Release
       run: flutter build apk --release
 
@@ -34,4 +38,3 @@ jobs:
       with:
         name: app-release
         path: build/app/outputs/flutter-apk/app-release.apk
-        
